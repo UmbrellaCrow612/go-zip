@@ -64,6 +64,8 @@ func Parse() *shared.Options {
 				os.Exit(1)
 			}
 			opts.IncludeFolders = re
+		case arg == "--flatten":
+			opts.Flatten = true
 		default:
 			utils.PrintStderr("Error: unknown flag: " + arg)
 			os.Exit(1)

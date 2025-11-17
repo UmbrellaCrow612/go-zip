@@ -38,13 +38,11 @@ func RunUnZipCmd(options *shared.Options) error {
 	}
 	defer reader.Close()
 
-	// Determine output directory
 	outputDir := options.OutPath
 	if outputDir == "" {
 		outputDir = filepath.Dir(zipPath)
 	}
 
-	// Use the zip filename (without extension) as final directory
 	base := filepath.Base(zipPath)
 	finalDir := filepath.Join(outputDir, base[:len(base)-len(filepath.Ext(base))])
 
@@ -61,11 +59,45 @@ func RunUnZipCmd(options *shared.Options) error {
 		}
 	}
 
+	if options.Flatten {
+		if err := flattenSingleDir(finalDir); err != nil {
+			utils.PrintStderr("error flattening directory: " + err.Error())
+		}
+	}
+
 	if err := removeEmptyDirs(finalDir); err != nil {
 		utils.PrintStderr("error removing empty directories: " + err.Error())
 	}
 
 	utils.PrintStdout("Extraction complete!")
+	return nil
+}
+
+func flattenSingleDir(root string) error {
+	entries, err := os.ReadDir(root)
+	if err != nil {
+		return err
+	}
+
+	if len(entries) == 1 && entries[0].IsDir() {
+		singleDir := filepath.Join(root, entries[0].Name())
+
+		subEntries, err := os.ReadDir(singleDir)
+		if err != nil {
+			return err
+		}
+
+		for _, sub := range subEntries {
+			srcPath := filepath.Join(singleDir, sub.Name())
+			dstPath := filepath.Join(root, sub.Name())
+			if err := os.Rename(srcPath, dstPath); err != nil {
+				return err
+			}
+		}
+
+		return os.Remove(singleDir)
+	}
+
 	return nil
 }
 

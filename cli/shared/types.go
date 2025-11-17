@@ -18,4 +18,7 @@ type Options struct {
 
 	// The command to run
 	Cmd string
+
+	// If the unzip folder contains a single dir then brings contents of it one layer
+	Flatten bool
 }
