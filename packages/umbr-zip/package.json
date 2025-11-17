@@ -1,6 +1,6 @@
 {
   "name": "umbr-zip",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A CLI tool to zip and unzip",
   "main": "index.js",
   "bin": {
