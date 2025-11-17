@@ -11,9 +11,17 @@ import (
 func Run(options *shared.Options) {
 	switch options.Cmd {
 	case "zip":
-		RunZipCmd(options)
+		err := RunZipCmd(options)
+		if err != nil {
+			utils.PrintStderr(err.Error())
+			os.Exit(1)
+		}
 	case "unzip":
-		RunUnZipCmd(options)
+		err := RunUnZipCmd(options)
+		if err != nil {
+			utils.PrintStderr(err.Error())
+			os.Exit(1)
+		}
 	default:
 		utils.PrintStderr("Error: unknown command: " + options.Cmd + ". Valid commands are 'zip' or 'unzip'.")
 		os.Exit(1)
