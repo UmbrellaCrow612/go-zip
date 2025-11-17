@@ -10,14 +10,11 @@ type Options struct {
 	// The path to area to output - resolves to abs path
 	OutPath string
 
-	// New name for the unziped folder or file if empty not provided
-	Name string
+	// Regular expression for include only specific file names
+	IncludeFiles *regexp.Regexp
 
-	// If it should recursive copy
-	Recursive bool
-
-	// Regular expression for exclude files or folders or nil im not provided
-	Exclude *regexp.Regexp
+	// Regular expression to only include specific folders
+	IncludeFolders *regexp.Regexp
 
 	// The command to run
 	Cmd string

@@ -39,6 +39,5 @@ cli unzip /path/to/archive.zip /path/to/extracted-folder --exclude="file\.txt|sk
 | `unzip`         | command | Yes      | Extract files or folders from a zip archive                                   | `cli unzip archive.zip extracted_folder`                                    |     |     |
 | `/in-path`      | string  | Yes      | Input file or folder to zip                                                   | `cli zip ./folder ./archive.zip`                                            |     |     |
 | `/out-path`     | string  | Yes      | Output zip file or extraction folder                                          | `cli unzip archive.zip ./output`                                            |     |     |
-| `--recursive`   | bool    | No       | Include all files recursively when zipping                                    | `cli zip -r folder archive.zip`                                             |     |     |
 | `--name`        | string  | No       | Rename extracted folder when unzipping                                        | `cli unzip archive.zip ./output --name=myfolder`                            |     |     |
 | `--exclude`     | string  | No       | **Regular expression** for files/folders to exclude when zipping or unzipping | `cli unzip archive.zip ./output --name=myfolder --exlude=regularExpression` |     |     |

@@ -48,16 +48,22 @@ func Parse() *shared.Options {
 	// Parse optional flags
 	for _, arg := range args[3:] {
 		switch {
-		case arg == "-r" || arg == "--recursive":
-			opts.Recursive = true
-		case strings.HasPrefix(arg, "--exclude="):
-			pattern := strings.TrimPrefix(arg, "--exclude=")
+		case strings.HasPrefix(arg, "--include-files="):
+			pattern := strings.TrimPrefix(arg, "--include-files=")
 			re, err := regexp.Compile(pattern)
 			if err != nil {
 				utils.PrintStderr("Error compiling exclude regex: " + err.Error())
 				os.Exit(1)
 			}
-			opts.Exclude = re
+			opts.IncludeFiles = re
+		case strings.HasPrefix(arg, "--include-folders="):
+			pattern := strings.TrimPrefix(arg, "--include-folders=")
+			re, err := regexp.Compile(pattern)
+			if err != nil {
+				utils.PrintStderr("Error compiling exclude regex: " + err.Error())
+				os.Exit(1)
+			}
+			opts.IncludeFolders = re
 		case strings.HasPrefix(arg, "--name="):
 			opts.Name = strings.TrimPrefix(arg, "--name=")
 		default:
