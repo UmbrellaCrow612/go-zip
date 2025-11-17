@@ -5,8 +5,15 @@ const path = require("path");
 const os = require("os");
 
 /**
- * Get the path to the platform-specific Go Zip binary
- * @returns {string} Binary path
+ * Get the platform-specific Go Zip binary path.
+ *
+ * Determines the correct binary based on the current OS:
+ * - Windows: `go-zip-windows.exe`
+ * - macOS: `go-zip-darwin`
+ * - Linux: `go-zip-linux`
+ *
+ * @throws {Error} Throws if the platform is unsupported.
+ * @returns {string} Absolute path to the Go Zip binary.
  */
 function getBinaryPath() {
   const platform = os.platform();
@@ -30,10 +37,11 @@ function getBinaryPath() {
 }
 
 /**
- * Spawn the Go Zip binary with the given arguments
- * @param {string[]} args Arguments to pass to the binary
- * @param {number} [timeout] Optional timeout in milliseconds
- * @returns {Promise<void>} Resolves when process exits successfully
+ * Spawn the Go Zip binary with specified arguments.
+ *
+ * @param {string[]} args - Arguments to pass to the binary.
+ * @param {number} [timeout] - Optional timeout in milliseconds.
+ * @returns {Promise<void>} Resolves when the process exits successfully, rejects on error or timeout.
  */
 function runBinary(args, timeout) {
   return new Promise((resolve, reject) => {
@@ -60,12 +68,16 @@ function runBinary(args, timeout) {
 }
 
 /**
- * Zip a file or folder
- * @param {string} input Input file or folder path
- * @param {string} output Output zip file path
- * @param {Object} [options] Optional arguments
- * @param {number} [options.timeout] Timeout in milliseconds
- * @returns {Promise<void>}
+ * Compress a file or folder into a zip archive.
+ *
+ * @param {string} input - Path to the file or folder to compress.
+ * @param {string} output - Path where the zip archive will be created.
+ * @param {Object} [options] - Optional parameters.
+ * @param {number} [options.timeout] - Timeout in milliseconds for the operation.
+ * @returns {Promise<void>} Resolves when compression is complete.
+ *
+ * @example
+ * await zip("./folder", "./archive.zip", { timeout: 5000 });
  */
 function zip(input, output, options = {}) {
   const args = ["zip", input, output];
@@ -73,15 +85,21 @@ function zip(input, output, options = {}) {
 }
 
 /**
- * Unzip an archive
- * @param {string} input Input zip file path
- * @param {string} output Output folder path
- * @param {Object} [options] Optional arguments
- * @param {string} [options.includeFiles] Regex to include files
- * @param {string} [options.includeFolders] Regex to include folders
- * @param {boolean} [options.flatten] Flatten single-directory contents
- * @param {number} [options.timeout] Timeout in milliseconds
- * @returns {Promise<void>}
+ * Extract files from a zip archive.
+ *
+ * Supports optional filtering and flattening of extracted files.
+ *
+ * @param {string} input - Path to the zip archive.
+ * @param {string} output - Folder path where files will be extracted.
+ * @param {Object} [options] - Optional parameters.
+ * @param {string} [options.includeFiles] - Regex pattern to include specific files.
+ * @param {string} [options.includeFolders] - Regex pattern to include specific folders.
+ * @param {boolean} [options.flatten] - If true, flattens single-directory contents.
+ * @param {number} [options.timeout] - Timeout in milliseconds for the operation.
+ * @returns {Promise<void>} Resolves when extraction is complete.
+ *
+ * @example
+ * await unzip("./archive.zip", "./output", { includeFiles: ".*\\.txt$", flatten: true });
  */
 function unzip(input, output, options = {}) {
   const args = ["unzip", input, output];
@@ -95,5 +113,4 @@ function unzip(input, output, options = {}) {
   return runBinary(args, options.timeout);
 }
 
-// Export helpers for programmatic use
 module.exports = { zip, unzip };
