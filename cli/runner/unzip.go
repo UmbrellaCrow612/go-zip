@@ -40,32 +40,33 @@ func RunUnZipCmd(options *shared.Options) error {
 
 	outputDir := options.OutPath
 	if outputDir == "" {
-		outputDir = filepath.Dir(zipPath)
+		base := filepath.Base(zipPath)
+		outputDir = filepath.Join(filepath.Dir(zipPath), base[:len(base)-len(filepath.Ext(base))])
+		if err := os.MkdirAll(outputDir, 0755); err != nil {
+			return errors.New("failed to create output directory: " + err.Error())
+		}
+	} else {
+		if err := os.MkdirAll(outputDir, 0755); err != nil {
+			return errors.New("failed to create output directory: " + err.Error())
+		}
 	}
 
-	base := filepath.Base(zipPath)
-	finalDir := filepath.Join(outputDir, base[:len(base)-len(filepath.Ext(base))])
-
-	if err := os.MkdirAll(finalDir, 0755); err != nil {
-		return errors.New("failed to create output directory: " + err.Error())
-	}
-
-	utils.PrintStdout("Extracting to: " + finalDir)
+	utils.PrintStdout("Extracting to: " + outputDir)
 
 	for _, f := range reader.File {
-		err = extractZipEntry(f, finalDir, options)
+		err = extractZipEntry(f, outputDir, options)
 		if err != nil {
 			utils.PrintStderr("error extracting " + f.Name + ": " + err.Error())
 		}
 	}
 
 	if options.Flatten {
-		if err := flattenSingleDir(finalDir); err != nil {
+		if err := flattenSingleDir(outputDir); err != nil {
 			utils.PrintStderr("error flattening directory: " + err.Error())
 		}
 	}
 
-	if err := removeEmptyDirs(finalDir); err != nil {
+	if err := removeEmptyDirs(outputDir); err != nil {
 		utils.PrintStderr("error removing empty directories: " + err.Error())
 	}
 
