@@ -44,13 +44,9 @@ func RunUnZipCmd(options *shared.Options) error {
 		outputDir = filepath.Dir(zipPath)
 	}
 
-	var finalDir string
-	if options.Name != "" {
-		finalDir = filepath.Join(outputDir, options.Name)
-	} else {
-		base := filepath.Base(zipPath)
-		finalDir = filepath.Join(outputDir, base[:len(base)-len(filepath.Ext(base))])
-	}
+	// Use the zip filename (without extension) as final directory
+	base := filepath.Base(zipPath)
+	finalDir := filepath.Join(outputDir, base[:len(base)-len(filepath.Ext(base))])
 
 	if err := os.MkdirAll(finalDir, 0755); err != nil {
 		return errors.New("failed to create output directory: " + err.Error())

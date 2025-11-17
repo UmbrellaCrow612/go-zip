@@ -64,8 +64,6 @@ func Parse() *shared.Options {
 				os.Exit(1)
 			}
 			opts.IncludeFolders = re
-		case strings.HasPrefix(arg, "--name="):
-			opts.Name = strings.TrimPrefix(arg, "--name=")
 		default:
 			utils.PrintStderr("Error: unknown flag: " + arg)
 			os.Exit(1)
