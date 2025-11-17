@@ -86,28 +86,13 @@ function zip(input, output, options = {}) {
 function unzip(input, output, options = {}) {
   const args = ["unzip", input, output];
 
-  if (options.includeFiles) args.push(`--include-files=${options.includeFiles}`);
-  if (options.includeFolders) args.push(`--include-folders=${options.includeFolders}`);
+  if (options.includeFiles)
+    args.push(`--include-files=${options.includeFiles}`);
+  if (options.includeFolders)
+    args.push(`--include-folders=${options.includeFolders}`);
   if (options.flatten) args.push("--flatten");
 
   return runBinary(args, options.timeout);
-}
-
-/**
- * CLI passthrough: if run directly via `npm run umbr-zip ...`
- */
-if (require.main === module) {
-  const args = process.argv.slice(2);
-  if (!args.length) {
-    console.error("Usage: npm run umbr-zip <zip|unzip> <path> <outPath> [flags]");
-    process.exit(1);
-  }
-
-  // Spawn binary directly
-  runBinary(args).catch((err) => {
-    console.error(err.message);
-    process.exit(1);
-  });
 }
 
 // Export helpers for programmatic use
