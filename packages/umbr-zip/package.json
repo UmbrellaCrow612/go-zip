@@ -15,5 +15,9 @@
     "umbr-zip": "node index.js"
   },
   "author": "Yousaf Wazir",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UmbrellaCrow612/go-zip.git"
+  }
 }
