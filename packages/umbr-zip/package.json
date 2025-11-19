@@ -1,6 +1,6 @@
 {
   "name": "umbr-zip",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A tool to zip and unzip for scripting",
   "main": "index.js",
   "files": [
@@ -10,7 +10,7 @@
     "scripts/"
   ],
   "scripts": {
-    "postinstall": "chmod +x bin/*"
+    "postinstall": "node scripts/set-perm.js"
   },
   "author": "Yousaf Wazir",
   "license": "ISC",
