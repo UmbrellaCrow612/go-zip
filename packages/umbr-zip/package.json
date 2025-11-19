@@ -1,18 +1,16 @@
 {
   "name": "umbr-zip",
-  "version": "0.0.5",
-  "description": "A CLI tool to zip and unzip",
+  "version": "0.0.6",
+  "description": "A tool to zip and unzip for scripting",
   "main": "index.js",
-  "bin": {
-    "umbr-zip": "./index.js"
-  },
   "files": [
     "index.js",
-    "bin/**/*",
-    "README.md"
+    "bin/",
+    "README.md",
+    "scripts/"
   ],
   "scripts": {
-    "umbr-zip": "node index.js"
+    "postinstall": "chmod +x bin/*"
   },
   "author": "Yousaf Wazir",
   "license": "ISC",
